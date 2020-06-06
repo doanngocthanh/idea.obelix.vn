@@ -4,16 +4,42 @@ include_once('Model/danhMucBaiViet.php');
 $baiViet=new baiViet();
 $listBaiViet=$baiViet->getAll();
 $danhMucBaiViet =new danhMucBaiViet();
+$listdmbv =$danhMucBaiViet->getAll();
 ?>
-        <div class="container">
+<div class="container">
+<h3 class="col">
+        Thêm Bài Viết Mới
+</h3>
+<form action="" method="post">
+<div class="form-group">
+    <label for="formGroupExampleInput">Tiêu Đề Bài Viết</label>
+    <input type="text" class="form-control" id="formGroupExampleInput" >
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Mô Tả Bài Viết</label>
+    <input type="text" class="form-control" id="formGroupExampleInput">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Danh Mục Bài Viết</label>
+    <select name="cboloai" class="custom-select" id="inputGroupSelect01">
+
+<?php foreach ($listdmbv as $key => $value) {
+  echo '<option value="'.$value['id_danh_muc'].'">'.$value['ten_danh_muc'].'</option>';
+}
+?>
+
+  </select>    
+
+</div>
+<textarea name="content" id="content" class="form-control ckeditor"></textarea>
+
+</form>
+
 
     <h3 class="col">
         Danh Sách Bài Viết
     </h3>
-    <form action="" method="post">
-
-    </form>
-
+    
     <table class="table table-striped table-bordered table-sm" style="width:100%" id='exampletbl3'>
         <thead>
             <tr>
@@ -30,10 +56,10 @@ $danhMucBaiViet =new danhMucBaiViet();
 
 
             </tr>
-            
+
         </thead>
         <tbody>
-        <?php
+            <?php
 foreach ($listBaiViet as $key => $value) {
 $danhMuc=$danhMucBaiViet->GetListById($value['id_danh_muc_bai_viet']);
 $tendanhmuc='';
@@ -55,14 +81,14 @@ if($value['hide_show']!=0){
 }
 ?>
         </tbody>
-        
-    </table>
-    <textarea name="content" id="content" class="form-control ckeditor"></textarea>
-    <script>
-    CKEDITOR.replace('content', {
-        height: 300,
-        filebrowserUploadUrl: "upload.php"
-    });
-</script>
 
-    </div>
+    </table>
+    
+    <script>
+        CKEDITOR.replace('content', {
+            height: 300,
+            filebrowserUploadUrl: "upload.php"
+        });
+    </script>
+
+</div>

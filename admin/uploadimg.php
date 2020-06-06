@@ -18,7 +18,8 @@ if(isset($_POST['add'])){
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>';
+    </div>';  
+    
     }else {
         $new_str = utf8tourl(utf8convert($_POST['txtName']));
 

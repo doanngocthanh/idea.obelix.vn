@@ -1,16 +1,16 @@
 
 <h3 class="col">
-  Danh Sách Menu Cấp 2
+ Quản Lý Danh Mục
 </h3>
 <table  class="table table-striped table-bordered table-sm" style="width:100%" id='exampletbl1'>
   <thead>
     <tr>
     <th scope="col"><button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal2">
-    <ion-icon size="small" name="add-outline"></ion-icon>Menu lv2
+    <ion-icon size="small" name="add-outline"></ion-icon>Thêm Danh Mục
 </button></th>
-      <th scope="col">Tên Menu Cấp 2</th>
+      <th scope="col">Danh Mục</th>
       <th scope="col">Hình</th>
-      <th scope="col">Menu Cấp 1</th>
+      <th scope="col">Menu hiển thị</th>
       <th scope="col">Lượt Click</th>
       <th scope="col">Thao Tác</th>
       

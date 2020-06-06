@@ -1,6 +1,6 @@
 <div class="container">
     <h3 class="col">
-        Danh Sách Menu Cấp 1
+        Danh Sách Menu 
     </h3>
     <?php 
   include_once("Model/loaiDanhMuc.php");
@@ -59,10 +59,10 @@
                 <th scope="col">
                     <button type="button" class="btn btn-outline-success" data-toggle="modal"
                         data-target="#exampleModal">
-                        <ion-icon size="small" name="add-outline"></ion-icon>Menu lv1
+                        <ion-icon size="small" name="add-outline"></ion-icon>Thêm Menu
                     </button></th>
                 <th scope="col">Tên Menu</th>
-                <th scope="col">Menu Cấp 2</th>
+                <th scope="col">Danh Mục</th>
                 <th scope="col">Vị Trí Xuất Hiện</th>
                 <th scope="col">Trạng Thái</th>
                 <th scope="col">Thao Tác</th>
