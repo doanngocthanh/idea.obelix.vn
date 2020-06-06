@@ -4,10 +4,7 @@ include_once('Model/danhMucBaiViet.php');
 $baiViet=new baiViet();
 $listBaiViet=$baiViet->getAll();
 $danhMucBaiViet =new danhMucBaiViet();
-
 ?>
-
-
         <div class="container">
 
     <h3 class="col">
@@ -60,5 +57,12 @@ if($value['hide_show']!=0){
         </tbody>
         
     </table>
+    <textarea name="content" id="content" class="form-control ckeditor"></textarea>
+    <script>
+    CKEDITOR.replace('content', {
+        height: 300,
+        filebrowserUploadUrl: "upload.php"
+    });
+</script>
 
     </div>
