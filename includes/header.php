@@ -6,17 +6,17 @@
             </div>
             <div class="col-lg-6 justify-content-center">
                         <div class="col">
-                            <form class="card card-sm">
+                            <form class="card card-sm" action="index.php" method="get">
                                 <div class="card-body row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <i class="fa fa-search text-body"></i>
                                     </div>
                                     <!--end of col-->
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="nhập từ khoá tìm kiếm">
+                                        <input class="form-control form-control-lg form-control-borderless" name="search" type="search" placeholder="nhập từ khoá tìm kiếm">
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Tìm kiếm</button>
+                                        <button class="btn btn-lg btn-primary" type="submit">Tìm kiếm</button>
                                     </div>
                                     <!--end of col-->
                                 </div>

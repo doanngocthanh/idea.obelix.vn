@@ -10,36 +10,40 @@ $mota = '';
 $danhmucbv = '';
 $noidungbv = '';
 if (isset($_POST['btnquanlybaiviet'])) {
-    if (isset($_POST['txtTieuDe'])) {
-        $tieude = $_POST['txtTieuDe'];
-    }
-    if (isset($_POST['txtMota'])) {
-        $mota = $_POST['txtMota'];
-    }
-    if (isset($_POST['txtNoiDung'])) {
-        $noidungbv = $_POST['txtNoiDung'];
-    }
+    if ($_POST['btnquanlybaiviet'] == "add") {
+        if (isset($_POST['txtTieuDe'])) {
+            $tieude = $_POST['txtTieuDe'];
+        }
+        if (isset($_POST['txtMota'])) {
+            $mota = $_POST['txtMota'];
+        }
+        if (isset($_POST['txtNoiDung'])) {
+            $noidungbv = $_POST['txtNoiDung'];
+        }
 
-    if ($tieude == '' || $mota = '' || $noidungbv = '') {
-        echo '
+        if ($tieude == '' || $mota = '' || $noidungbv = '') {
+            echo '
        <div class="container alert alert-warning alert-dismissible fade show" role="alert">
        <strong>Bạn cần điền đầy đủ thông tin!</strong>
        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
          <span aria-hidden="true">&times;</span>
        </button>
      </div>';
-    } else {
-        $check = $baiViet->insertBaiViet($tieude, $_POST['txtNoiDung'], $mota, $_POST['cboDanhMuc']);
-        if (isset($check)) {
-            header("location:?btAction=qlbv");
         } else {
-            echo '<div class="container alert alert-warning alert-dismissible fade show" role="alert">
+            $check = $baiViet->insertBaiViet($tieude, $_POST['txtNoiDung'], $mota, $_POST['cboDanhMuc']);
+            if (isset($check)) {
+                header("location:?btAction=qlbv");
+            } else {
+                echo '<div class="container alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Tiêu đề bài viết đã tồn tại!</strong> vui lòng chọn tiêu đề khác
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>';
+            }
         }
+    } else if ($_POST['btnquanlybaiviet'] == "update") {
+        echo 'haha';
     }
 }
 if (isset($_GET['edit'])) {
@@ -57,6 +61,8 @@ if (isset($_GET['edit'])) {
         $danhmucbv = $value['id_danh_muc_bai_viet'];
         $img = $value['hinh_bai_viet'];
     }
+} else if (isset($_GET['delete'])) {
+    echo 'ới';
 }
 
 ?>
@@ -73,19 +79,19 @@ if (isset($_GET['edit'])) {
         </div>
         <div class="form-group">
             <label>Mô Tả Bài Viết</label>
-            <input type="text" name="txtMoTa" value="<?php if ($mota != '') {
+            <input type="text"  value="<?php if ($mota != '') {
                                                             echo $mota;
-                                                        } ?>" class="form-control">
+                                                        } ?>" class="form-control" name="txtMoTa">
         </div>
         <div class="form-group">
             <label>Hình Bài Viết</label>
 
             <input type='file' name="txtFile" class="form-control" onchange="loadImg(this)" require />
-          <img class="showimage" style=" max-width: 150px;max-height:150px;" src="<?php try {
-                echo "img/".$img;
-            } catch (\Throwable $th) {
-             echo $th;
-            }?>" alt="your image" require />
+            <img class="showimage" style=" max-width: 150px;max-height:150px;" src="<?php try {
+                                                                                        echo "img/" . $img;
+                                                                                    } catch (\Throwable $th) {
+                                                                                        echo $th;
+                                                                                    } ?>" alt="your image" require />
 
         </div>
         <div class="form-group">
@@ -157,7 +163,7 @@ if (isset($_GET['edit'])) {
             <td>
             
             <a class="btn btn-default" href="?btAction=qlbv&edit=' . $value['id_bai_viet'] . '">Chỉnh Sửa</a>
-            <a class="btn btn-default" href="?btAction=qlbv&edit=' . $value['id_bai_viet'] . '">Xóa</a>
+            <a class="btn btn-default" href="?btAction=qlbv&delete=' . $value['id_bai_viet'] . '">Xóa</a>
             </td>
         </tr>';
             }
@@ -168,10 +174,9 @@ if (isset($_GET['edit'])) {
 
     <script>
         CKEDITOR.replace('content', {
-            height: 300,
-            filebrowserUploadUrl: "admin_upload.php"
+            filebrowserUploadUrl: "admin_upload.php",
         });
-
+       
         function loadImg(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -184,8 +189,9 @@ if (isset($_GET['edit'])) {
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
         function showImg(input) {
-           
+
         }
     </script>
 

@@ -6,9 +6,15 @@ class baiViet extends DB
   {
     return $this->select("SELECT * FROM `baiviet`");
   }
+
   function getIdBaiViet($id)
   {
     return $this->select("SELECT * FROM `baiviet` WHERE id_bai_viet='$id'");
+  }
+
+  function Search($search)
+  {
+    return $this->select("SELECT * FROM `baiviet` WHERE ten_bai_viet LIKE '%$search%'");
   }
   function getBaiVietByDanhMuc($id_danhmuc)
   {
@@ -17,7 +23,7 @@ class baiViet extends DB
   function insertBaiViet($ten_bai_viet,$noi_dung_bai_viet,$mo_ta_bai_viet,$id_danh_muc_bai_viet)
   {
     $id_bai_viet=utf8tourl(utf8convert($ten_bai_viet));
-    $target_dir = '../assets/img/';
+    $target_dir = '';
     $img='';
     if ($_FILES['txtFile']['error'] > 0){
       $img='';

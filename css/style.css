@@ -227,3 +227,171 @@ header .icon-search {
 .img-slick {
     max-height: 170px !important;
 }
+
+.button {
+    border-radius: 0px;
+    background-color: #007bff;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+
+/* menu */
+
+.slideout-sidebar {
+    position: fixed;
+    top: 0;
+    left: -190px;
+    z-index: 0;
+    width: 150px;
+    height: 100%;
+    padding: 20px;
+    background-color: #212121;
+    transition: all 300ms ease-in-out;
+}
+
+.slideout-sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.slideout-sidebar ul li {
+    cursor: pointer;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(244, 244, 244, 0.4);
+    color: rgba(244, 244, 244, 0.7);
+}
+
+.slideout-sidebar ul li:last-child {
+    border-bottom: 0;
+}
+
+.slideout-sidebar ul li:hover {
+    color: rgba(244, 244, 244, 1);
+}
+
+
+/* -- Menu Icon -- */
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-icon {
+    position: absolute;
+    top: 18px;
+    left: 30px;
+    font-size: 24px;
+    z-index: 1;
+    transition: all 300ms ease-in-out;
+}
+
+
+/*-- The Magic --*/
+
+#menu-toggle:checked~.slideout-sidebar {
+    left: 0px;
+}
+
+#menu-toggle:checked+.menu-icon {
+    left: 210px;
+}
+
+#menu-toggle:checked~.content-container {
+    padding-left: 190px;
+}
+
+
+/* -- Media Queries -- */
+
+@media (max-width: 991px) {
+    .content-container {
+        max-width: 480px;
+    }
+}
+
+.slideout-sidebar,
+.menu-icon {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .content-container {
+        max-width: 100%;
+        margin: 30px auto 0;
+    }
+    .slideout-sidebar,
+    .menu-icon {
+        display: block;
+    }
+    #menu-toggle:checked~.content-container {
+        padding-left: 0;
+    }
+    .slideout-sidebar ul {
+        text-align: center;
+        max-width: 200px;
+        margin: 30px auto 0;
+    }
+    .menu-icon {
+        left: 20px;
+        position: fixed;
+    }
+    #menu-toggle:checked~.slideout-sidebar {
+        width: 100%;
+    }
+    #menu-toggle:checked+.menu-icon {
+        left: 87%;
+        color: #fafafa;
+    }
+    @media screen and (max-width: 736px) and (orientation: landscape) {
+        .slideout-sidebar {
+            padding: 0;
+        }
+        .slideout-sidebar ul {
+            max-width: 100%;
+            margin: 60px auto 0;
+        }
+        .slideout-sidebar ul li {
+            display: inline-block;
+            border-bottom: 0;
+            width: 72px;
+            padding: 18px 24px;
+            margin: 0 6px 12px;
+            color: #ffffff;
+            background-color: #777;
+        }
+    }
+}
