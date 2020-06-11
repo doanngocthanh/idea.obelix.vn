@@ -1,52 +1,51 @@
 <div class="container">
-    <h3 class="pb-3 mb-4 font-italic border-bottom">
-        <a>Trang Chủ</a>
-    </h3>
+  <h3 class="pb-3 mb-4 font-italic border-bottom">
+    <a>Trang Chủ</a>
+  </h3>
 
-    <?php
-    $_SESSION["title"]='';
-    foreach ($listLoaiDanhMuc as $item) {
-        $danhMucBaiViet = new danhMucBaiViet();
-        $danhmuc = $danhMucBaiViet->getIdLoai($item['id_loai']);
-        $TEXT = '';
+  <?php
+  foreach ($listLoaiDanhMuc as $item) {
+    $danhMucBaiViet = new danhMucBaiViet();
+    $danhmuc = $danhMucBaiViet->getIdLoai($item['id_loai']);
+    $TEXT = '';
 
-        if (count($danhmuc) != 0) {
+    if (count($danhmuc) != 0) {
 
-            //start div slick =>css and js config in js/js.js 
-            $TEXT .= '<div class="slick">';
-            foreach ($danhmuc as $itemDM) {
-                $baiviet = new baiViet();
-                $listbaiviet = $baiviet->getBaiVietByDanhMuc($itemDM['id_danh_muc']);
-                if (count($listbaiviet) == 1) {
-                    $idbaiviet = '';
-                    foreach ($listbaiviet as $key => $value) {
-                        $idbaiviet = $value['id_bai_viet'];
-                    }
-                    $TEXT .= '<div>
+      //start div slick =>css and js config in js/js.js 
+      $TEXT .= '<div class="slick">';
+      foreach ($danhmuc as $itemDM) {
+        $baiviet = new baiViet();
+        $listbaiviet = $baiviet->getBaiVietByDanhMuc($itemDM['id_danh_muc']);
+        if (count($listbaiviet) == 1) {
+          $idbaiviet = '';
+          foreach ($listbaiviet as $key => $value) {
+            $idbaiviet = $value['id_bai_viet'];
+          }
+          $TEXT .= '<div>
             <div class="cldiv2">
-              <a href="?danh-muc=' . $itemDM['id_danh_muc'] . '&id-loai=' . $item['id_loai'] . '&id-bai-viet=' . $idbaiviet . '"> <img class="img-slick" style="max-height: 170px;" src="img/' . $itemDM['hinh_danh_muc'] . '"/> 
+              <a href="index.php?danh-muc=' . $itemDM['id_danh_muc'] . '&id-loai=' . $item['id_loai'] . '&id-bai-viet=' . $idbaiviet . '"> <img class="img-slick" style="max-height: 170px;" src="img/' . $itemDM['hinh_danh_muc'] . '"/> 
                <h5>' . $itemDM['ten_danh_muc'] . '</h5></a>
             </div>
       </div>';
-                } else {
-                    $TEXT .= '<div>
+        } else {
+          $TEXT .= '<div>
             <div class="cldiv2">
-              <a href="?danh-muc=' . $itemDM['id_danh_muc'] . '&id-loai=' . $item['id_loai'] . '&id-bai-viet="> <img class="img-slick" style="max-height: 170px;" src="img/' . $itemDM['hinh_danh_muc'] . '"/> 
+              <a href="index.php?danh-muc=' . $itemDM['id_danh_muc'] . '&id-loai=' . $item['id_loai'] . '&id-bai-viet="> <img class="img-slick" style="max-height: 170px;" src="img/' . $itemDM['hinh_danh_muc'] . '"/> 
                <h5>' . $itemDM['ten_danh_muc'] . '</h5></a>
             </div>
       </div>';
-                }
-            }
-            $TEXT .='</div>';
-            //end div slick
+        }
+      }
+      $TEXT .= '</div>';
+      //end div slick
 
-            echo '
+      echo '
         <div class="col">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
          
               <h3 class="mb-0">
-                <a class="text-dark" href="#">' . $item['ten_loai'] . '</a>
+                <a class="text-dark" >' . $item['ten_loai'] . '</a>
               </h3>
             
               <p class="card-text mb-auto">' . $item['mo_ta'] . '</p>
@@ -61,7 +60,9 @@
           </div>
         </div>
         ';
-        }
     }
-    ?>
+  }
+  echo '<script>document.title = "Idea Advertising.Print";</script>';
+
+  ?>
 </div>

@@ -6,7 +6,8 @@
         $tendmuc=$loaiDanhMuc->getId($_GET['id-loai']);
         foreach ($tendmuc as $key => $value) {
             echo $value['ten_loai'];
-            $_SESSION["title"]=$value['ten_loai'];
+            echo '<script>document.title = "Idea Advertising.Print - '.$value['ten_loai'].'";</script>';
+
         }
         ?></a>
       </h3>
@@ -19,11 +20,11 @@ foreach ($listdanhmuc as $key => $value) {
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
               <h3 class="mb-0">
-                <a class="text-dark" href="#">'.$value['ten_danh_muc'].'</a>
+                <a class="text-dark" href="index.php?danh-muc='.$value['id_danh_muc'].'&id-loai='.$_GET['id-loai'].'&id-bai-viet=">'.$value['ten_danh_muc'].'</a>
               </h3>
               <div class="mb-1 text-muted">Lượt Xem: '.$value['so_luong_xem'].'</div>
               <p class="card-text mb-auto">'.$value['mo_ta_danh_muc'].'</p>
-              <a href="#">Chi Tiết</a>
+              <a href="index.php?danh-muc='.$value['id_danh_muc'].'&id-loai='.$_GET['id-loai'].'&id-bai-viet=">Chi Tiết</a>
             </div>
             <img class="card-img-right flex-auto d-none d-md-block"  style="width: 200px; height: 250px;" src="img/'.$value['hinh_danh_muc'].'"/>
           </div>

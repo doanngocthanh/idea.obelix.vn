@@ -10,6 +10,10 @@ class baiViet extends DB
   {
     return $this->select("SELECT * FROM `baiviet` WHERE id_bai_viet='$id'");
   }
+  function Search($search)
+  {
+    return $this->select("SELECT * FROM `baiviet` WHERE ten_bai_viet LIKE '%$search%'");
+  }
   function getBaiVietByDanhMuc($id_danhmuc)
   {
     return $this->select("SELECT * FROM `baiviet` WHERE id_danh_muc_bai_viet='$id_danhmuc'");
