@@ -11,10 +11,7 @@ class baiViet extends DB
   {
     return $this->select("SELECT * FROM `baiviet` WHERE id_bai_viet='$id'");
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> d26807d6299d3f674bc6c67f9d6e6c447193d34f
   function Search($search)
   {
     return $this->select("SELECT * FROM `baiviet` WHERE ten_bai_viet LIKE '%$search%'");
@@ -26,15 +23,16 @@ class baiViet extends DB
   function insertBaiViet($ten_bai_viet,$noi_dung_bai_viet,$mo_ta_bai_viet,$id_danh_muc_bai_viet)
   {
     $id_bai_viet=utf8tourl(utf8convert($ten_bai_viet));
-    $target_dir = '';
+    $target_dir = 'img/';
     $img='';
+    $thoigian= date('Y/m/d H:m:s');
     if ($_FILES['txtFile']['error'] > 0){
       $img='';
     }else{
      
         move_uploaded_file($_FILES['txtFile']['tmp_name'], $target_dir. $_FILES['txtFile']['name']);
         $img= $target_dir. $_FILES['txtFile']['name'];
-        return $this->select("INSERT INTO `baiviet` (`id_bai_viet`, `ten_bai_viet`, `noi_dung_bai_viet`,`mo_ta_bai_viet`,`hinh_bai_viet`,id_danh_muc_bai_viet) VALUES ('$id_bai_viet','$ten_bai_viet', '$noi_dung_bai_viet','$mo_ta_bai_viet','$img','$id_danh_muc_bai_viet')");
+        return $this->select("INSERT INTO `baiviet` (`id_bai_viet`, `ten_bai_viet`, `noi_dung_bai_viet`,`mo_ta_bai_viet`,`hinh_bai_viet`,id_danh_muc_bai_viet,thoi_gian_dang_bai) VALUES ('$id_bai_viet','$ten_bai_viet', '$noi_dung_bai_viet','$mo_ta_bai_viet','$img','$id_danh_muc_bai_viet','$thoigian')");
       
      
     }
