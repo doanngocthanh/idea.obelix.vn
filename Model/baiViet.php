@@ -6,6 +6,10 @@ class baiViet extends DB
   {
     return $this->select("SELECT * FROM `baiviet`");
   }
+  function getAllClient()
+  {
+    return $this->select("SELECT * FROM `baiviet` where hide_show=0");
+  }
 
   function getIdBaiViet($id)
   {
@@ -14,32 +18,55 @@ class baiViet extends DB
 
   function Search($search)
   {
-    return $this->select("SELECT * FROM `baiviet` WHERE ten_bai_viet LIKE '%$search%'");
+    return $this->select("SELECT * FROM `baiviet` WHERE ten_bai_viet LIKE '%$search%' and hide_show=0");
   }
+
+  function getBaiVietByDanhMucClient($id_danhmuc){
+    return $this->select("SELECT * FROM `baiviet` WHERE id_danh_muc_bai_viet='$id_danhmuc' and hide_show=0");
+  }
+  
+
   function getBaiVietByDanhMuc($id_danhmuc)
   {
     return $this->select("SELECT * FROM `baiviet` WHERE id_danh_muc_bai_viet='$id_danhmuc'");
   }
-  function insertBaiViet($ten_bai_viet,$noi_dung_bai_viet,$mo_ta_bai_viet,$id_danh_muc_bai_viet)
+  function insertBaiViet($ten_bai_viet, $noi_dung_bai_viet, $mo_ta_bai_viet, $id_danh_muc_bai_viet, $hide_show)
   {
-    $id_bai_viet=utf8tourl(utf8convert($ten_bai_viet));
-    $target_dir = 'img/';
-    $img='';
-    $thoigian= date('Y/m/d H:m:s');
-    if ($_FILES['txtFile']['error'] > 0){
-      $img='';
-    }else{
-     
-        move_uploaded_file($_FILES['txtFile']['tmp_name'], $target_dir. $_FILES['txtFile']['name']);
-        $img= $target_dir. $_FILES['txtFile']['name'];
-        return $this->select("INSERT INTO `baiviet` (`id_bai_viet`, `ten_bai_viet`, `noi_dung_bai_viet`,`mo_ta_bai_viet`,`hinh_bai_viet`,id_danh_muc_bai_viet,thoi_gian_dang_bai) VALUES ('$id_bai_viet','$ten_bai_viet', '$noi_dung_bai_viet','$mo_ta_bai_viet','$img','$id_danh_muc_bai_viet','$thoigian')");
-      
-     
+    $id_bai_viet = utf8tourl(utf8convert($ten_bai_viet));
+    $img = '';
+    $thoigian = date('Y/m/d H:m:s');
+    if ($_FILES['txtFile']['error'] > 0) {
+      $img = '';
+    } else {
+
+      move_uploaded_file($_FILES['txtFile']['tmp_name'], 'img/' . $_FILES['txtFile']['name']);
+      $img = $_FILES['txtFile']['name'];
+      return $this->select("INSERT INTO `baiviet` (`id_bai_viet`, `ten_bai_viet`, `noi_dung_bai_viet`,`mo_ta_bai_viet`,`hinh_bai_viet`,`id_danh_muc_bai_viet`,`thoi_gian_dang_bai`,`ten_nguoi_dang`,`hide_show`) VALUES ('$id_bai_viet','$ten_bai_viet', '$noi_dung_bai_viet','$mo_ta_bai_viet','$img','$id_danh_muc_bai_viet','$thoigian','admin','$hide_show')");
     }
-
-
-
   }
+
+  public function deleteBaiviet($id)
+  {
+    # code...
+    return $this->select("DELETE FROM `baiviet` where `id_bai_viet`='$id'");
+  }
+  public function updateBaiViet($id_bai_viet,$ten_bai_viet, $noi_dung_bai_viet, $mo_ta_bai_viet, $id_danh_muc_bai_viet, $hide_show)
+  {
+  $id=trim($id_bai_viet," ");
+   
+      $thoigian = date('Y/m/d H:m:s');
+      if ($_FILES['txtFile']['error'] > 0) {
+        return $this->select("UPDATE baiviet SET ten_bai_viet='$ten_bai_viet', noi_dung_bai_viet='$noi_dung_bai_viet',mo_ta_bai_viet='$mo_ta_bai_viet',id_danh_muc_bai_viet='$id_danh_muc_bai_viet',thoi_gian_dang_bai='$thoigian',hide_show='$hide_show' WHERE `id_bai_viet`='$id'");  
+      }else{
+        move_uploaded_file($_FILES['txtFile']['tmp_name'], 'img/' . $_FILES['txtFile']['name']);
+        $img = $_FILES['txtFile']['name'];
+        return $this->select("UPDATE `baiviet` SET `ten_bai_viet`='$ten_bai_viet', `noi_dung_bai_viet`='$noi_dung_bai_viet',`mo_ta_bai_viet`='$mo_ta_bai_viet',`id_danh_muc_bai_viet`='$id_danh_muc_bai_viet',`thoi_gian_dang_bai`='$thoigian',`hinh_bai_viet`='$img',`hide_show`='$hide_show' WHERE `id_bai_viet`='$id'");  
+      
+      } 
+   
+    # code...
+  }
+
   public function GetListByIdFK($pk)
   {
     # load danh mục theo loại menu
@@ -70,7 +97,6 @@ class baiViet extends DB
     );
 
     foreach ($utf8 as $ascii => $uni) $str = preg_replace("/($uni)/i", $ascii, $str);
-
     return $str;
   }
   function utf8tourl($text)
@@ -85,6 +111,4 @@ class baiViet extends DB
     $text = str_replace("--", "-", $text);
     return $text;
   }
-
-  
 }

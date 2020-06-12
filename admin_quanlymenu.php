@@ -4,7 +4,7 @@
     </h3>
     <?php
 
-
+$url_this_page = 'img';
     include_once("Model/loaiDanhMuc.php");
     include_once("Model/danhMucBaiViet.php");
     $loaiDanhMuc = new loaiDanhMuc();
@@ -17,11 +17,11 @@
             }
             if ($_POST['btActionMenu'] == "add") {
                 $new_str = utf8tourl(utf8convert($_POST['txtName']));
-                $success = $loaiDanhMuc->insertLoaiDanhMuc($new_str, $_POST['txtName'], $hide);
+                $success = $loaiDanhMuc->insertLoaiDanhMuc($new_str, $_POST['txtName'], $hide,$_POST['txtMoTa'],$_POST['txtVitri']);
             } else if ($_POST['btActionMenu'] == 'delete') {
                 $loaiDanhMuc->deleteLoaiDanhMuc($_POST['txtId']);
             } else if ($_POST['btActionMenu'] == 'update') {
-                $loaiDanhMuc->updateLoaiDanhMuc($_POST['txtId'], $_POST['txtName'], $hide);
+                $loaiDanhMuc->updateLoaiDanhMuc($_POST['txtId'], $_POST['txtName'], $hide,$_POST['txtVitri'],$_POST['txtMoTa']);
             }
             header("Location:" . "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/' . "admin_index.php");
         } elseif (isset($_POST['btActionMenu2'])) {
@@ -104,6 +104,7 @@
                 <th scope="col">Tên Menu</th>
                 <th scope="col">Danh Mục</th>
                 <th scope="col">Vị Trí Xuất Hiện</th>
+                <th scope="col">Hình</th>
                 <th scope="col">Trạng Thái</th>
                 <th scope="col">Thao Tác</th>
 
@@ -131,13 +132,16 @@
                         <td><a href="?btAction=qlmn&menu=' . $value["id_loai"] . '">' . $value["ten_loai"] . '</a></td>
                         <td>' . count($listDanhMuc) . '</td>
                         <td>' . $value["menu_index"] . '</td>
+                       
+                        <td> <img style="width:150px" src="' . $url_this_page . '/' . $value["img"] . '" alt="' . $url_this_page . '/' . $value["img"] . '" class="img-thumbnail"/></td>
                         <td>' . $trangthai . '</td>
                         <td>
                         <button class="btn btn-outline-primary" onclick="loadIdUpDate(
-                        \'' . $value['id_loai'] . '\',
-                        \'' . $value['ten_loai'] . '\',
-                        ' . $value['hide_show'] . '
-                        )" data-toggle="modal" data-target="#updatemenu" ><ion-icon name="create-outline"></ion-icon></button>
+                        \'' . $value['id_loai'].'\',
+                        \'' . $value['ten_loai'].'\',
+                         '. $value['hide_show'].',
+                         '.$value['menu_index'].',
+                         \''.$value['mo_ta'].'\')" data-toggle="modal" data-target="#updatemenu" ><ion-icon name="create-outline"></ion-icon></button>
                         <button class="btn btn-outline-danger" onclick="loadId(\'' . $value["id_loai"] . '\')" data-toggle="modal" data-target="#deletenenu"><ion-icon name="close-outline"></ion-icon></button>
                         </td>
                         </tr>';
@@ -160,12 +164,22 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
 
                         <label for="addip">Tên Menu</label>
-                        <input id="addip" name="txtName" type="text" class="form-control" />
+                        <input name="txtName" type="text" class="form-control" />
+
+                        <label for="addip">Mô Tả Ngắn</label>
+                        <textarea class="form-control" name="txtMoTa"></textarea>
+                        <label for="addip">Vị Trí Xuất Hiện</label>
+                        <input id="addip" name="txtVitri" type="number" class="form-control" />
+                        <label for="hinhmna">Hình Menu <small style="color:red">Mẹo: nên giảm dung lượng ảnh để web được tối ưu hơn.</small></label>
+                        <input type='file' name="fileUpload" onchange="readURL3(this);" require />
+                        <img id="blah3" style=" max-width: 150px;max-height:150px;" src="<?php echo $url_this_page . '/180.png'; ?>" alt="your image" require />
+
                         <div class="custom-control custom-switch">
+                            
                             <input type="checkbox" name="txtHide_show" class="custom-control-input" id="customSwitch1">
                             <label class="custom-control-label" for="customSwitch1">Ẩn Menu</label>
                         </div>
@@ -211,11 +225,21 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label>Tên Menu</label>
                         <input name="txtId" hidden id="txtIdUpdate" type="text" class="form-control" />
                         <input name="txtName" id="txtNameUpdate" type="text" class="form-control" />
+                       
+                        <label>Mô Tả Ngắn</label>
+                        <textarea name="txtMoTa" id="txtMoTaUpdate" type="number" class="form-control">
+                            
+                        </textarea>
+                        <label>Vị trí xuất hiện</label>
+                        <input name="txtVitri" id="txtVitriUpdate" type="text" class="form-control" />
+                        <label for="hinhmna">Hình Menu <small style="color:red">Mẹo: nên giảm dung lượng ảnh để web được tối ưu hơn.</small></label>
+                        <input type='file' name="fileUpload" onchange="readURL4(this);" require />
+                        <img id="blah4" style=" max-width: 150px;max-height:150px;" src="<?php echo $url_this_page . '/180.png'; ?>" alt="your image" require />
 
                         <div class="custom-control custom-switch">
                             <input type="checkbox" name="txtHide_show" class="custom-control-input" id="customSwitch2">
@@ -224,7 +248,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" name="btActionMenu" value="update" class="btn btn-primary">Thêm</button>
+                        <button type="submit" name="btActionMenu" value="update" class="btn btn-primary">Cập Nhập</button>
                     </div>
                 </form>
             </div>
@@ -243,13 +267,15 @@
             document.getElementById('txtid2').value = id;
         }
 
-        function loadIdUpDate(id, noidung, checked) {
+        function loadIdUpDate(id, noidung, checked,vitri,mota) {
             console.log(id, noidung, checked);
             if (checked != 0) {
                 document.getElementById('customSwitch2').checked = true;
             }
             document.getElementById('txtIdUpdate').value = id;
             document.getElementById('txtNameUpdate').value = noidung;
+            document.getElementById('txtVitriUpdate').value = vitri;
+            document.getElementById('txtMoTaUpdate').value = mota;
 
 
         }
@@ -285,7 +311,7 @@
         <tbody>
 
             <?php
-            $url_this_page = "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/img';
+           
             $u = 0;
 
             foreach ($menucon as $key => $value) {
@@ -402,7 +428,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" name="btActionMenu2" value="add">Thêm</button>
+                    <button type="submit" class="btn btn-primary" name="btActionMenu2" value="add">Thêm</button>
                 </div>
                 </form>
             </div>
@@ -435,7 +461,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" name="btActionMenu2" value="update">Cập Nhập</button>
+                        <button type="submit" class="btn btn-primary" name="btActionMenu2" value="update">Cập Nhập</button>
                     </div>
             </div>
             </form>
@@ -474,11 +500,37 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah3')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL4(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah4')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function loadIdUpDateMenu(id, ten, loai) {
+            console.log(id, ten, loai);
             document.getElementById("idmenucon").value = id;
             document.getElementById("tenmenucon").value = ten;
             document.getElementById("inputGroupSelect012").value = loai;
+        
 
         }
     </script>

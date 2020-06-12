@@ -29,7 +29,7 @@
         } else if ($_GET['btAction'] == 'qlbv') {
             include('admin_quanlybaiviet.php');
         } else if ($_GET['btAction'] == 'qltk') {
-            echo 'quản lý tài khoản';
+            echo '';
         }
     } else {
         include('admin_quanlymenu.php');

@@ -8,6 +8,10 @@ class danhMucBaiViet extends DB {
    
     return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id'");
   }
+  function getIdLoaiClient($id){
+   
+    return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id'");
+  }
   function deleteDanhMucBaiViet($id){
     return $this->select("DELETE FROM `danhmucbaiviet`
     WHERE id_danh_muc = '$id'"); 
@@ -38,6 +42,13 @@ class danhMucBaiViet extends DB {
     # load danh mục theo loại menu
     return $this->select("SELECT * FROM `danhmucbaiviet` where id_danh_muc='$iddanhmuc'");
   }
+
+  public function UpdateSoLuongXem($id)
+  {
+    # load danh mục theo loại menu
+    return $this->select("UPDATE `danhmucbaiviet` set so_luong_xem = so_luong_xem +1 where id_danh_muc='$id'");
+  }
+
 }
 
 ?>

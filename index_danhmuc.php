@@ -6,16 +6,20 @@
   <?php
   foreach ($listLoaiDanhMuc as $item) {
     $danhMucBaiViet = new danhMucBaiViet();
-    $danhmuc = $danhMucBaiViet->getIdLoai($item['id_loai']);
+    $danhmuc = $danhMucBaiViet->getIdLoaiClient($item['id_loai']);
     $TEXT = '';
 
     if (count($danhmuc) != 0) {
 
+      if (count($danhmuc)==1) {
+        
+      }else{
+        
       //start div slick =>css and js config in js/js.js 
       $TEXT .= '<div class="slick">';
       foreach ($danhmuc as $itemDM) {
         $baiviet = new baiViet();
-        $listbaiviet = $baiviet->getBaiVietByDanhMuc($itemDM['id_danh_muc']);
+        $listbaiviet = $baiviet->getBaiVietByDanhMucClient($itemDM['id_danh_muc']);
         if (count($listbaiviet) == 1) {
           $idbaiviet = '';
           foreach ($listbaiviet as $key => $value) {
@@ -62,7 +66,10 @@
         ';
     }
   }
+}
   echo '<script>document.title = "Idea Advertising.Print";</script>';
+  
+
 
   ?>
 </div>

@@ -30,13 +30,13 @@ include "includes/header.php";
     if (isset($_GET['danh-muc']) || isset($_GET['id-loai']) || isset($_GET['id-bai-viet'])) {
         if (isset($_GET['danh-muc']) && isset($_GET['id-bai-viet'])) {
             $baiviet = new baiViet();
-            $listbaiviet = $baiviet->getBaiVietByDanhMuc($_GET['danh-muc']);
+            $listbaiviet = $baiviet->getBaiVietByDanhMucClient($_GET['danh-muc']);
            if($_GET['danh-muc']==''){
                include("index_loaidanhmucchitiet.php");
            }else{
             if ($_GET['id-bai-viet'] == "") {
                 $baiviet = new baiViet();
-                $listbaiviet = $baiviet->getBaiVietByDanhMuc($_GET['danh-muc']);
+                $listbaiviet = $baiviet->getBaiVietByDanhMucClient($_GET['danh-muc']);
                 if (count($listbaiviet) == 0) {
                     include("404.php");
                 } else if (count($listbaiviet) == 1) {

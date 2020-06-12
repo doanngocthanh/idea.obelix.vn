@@ -14,8 +14,8 @@ if (isset($_POST['btnquanlybaiviet'])) {
         if (isset($_POST['txtTieuDe'])) {
             $tieude = $_POST['txtTieuDe'];
         }
-        if (isset($_POST['txtMota'])) {
-            $mota = $_POST['txtMota'];
+        if (isset($_POST['txtMoTa'])) {
+            $mota = $_POST['txtMoTa'];
         }
         if (isset($_POST['txtNoiDung'])) {
             $noidungbv = $_POST['txtNoiDung'];
@@ -30,12 +30,16 @@ if (isset($_POST['btnquanlybaiviet'])) {
        </button>
      </div>';
         } else {
-            $check = $baiViet->insertBaiViet($tieude, $_POST['txtNoiDung'], $mota, $_POST['cboDanhMuc']);
+            $checked=0;
+            if(isset($_POST['txtHide_show'])){
+            $checked=1;
+            }
+            $check = $baiViet->insertBaiViet($tieude, $_POST['txtNoiDung'], $_POST['txtMoTa'], $_POST['cboDanhMuc'],$checked);
             if (isset($check)) {
                 header("location:?btAction=qlbv");
             } else {
                 echo '<div class="container alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Tiêu đề bài viết đã tồn tại!</strong> vui lòng chọn tiêu đề khác
+        <strong>Vui lòng cập nhập hình ảnh mới!</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -43,26 +47,51 @@ if (isset($_POST['btnquanlybaiviet'])) {
             }
         }
     } else if ($_POST['btnquanlybaiviet'] == "update") {
-        echo 'haha';
+        $checked=0;
+        if(isset($_POST['txtHide_show'])){
+        $checked=1;
+        }
+        $check = $baiViet->updateBaiViet($_POST['txtId'],$_POST['txtTieuDe'], $_POST['txtNoiDung'], $_POST['txtMoTa'], $_POST['cboDanhMuc'],$checked);
+        if (isset($check)) {
+            header("admin_index.php?btAction=qlbv&edit=".$_POST['txtId']);
+            echo'<div class="container alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Đã lưu bài Viết!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>';
+        } else {
+            header("admin_index.php?btAction=qlbv&edit=".$_POST['txtId']);
+            echo '<div class="container alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Có lỗi xãy ra!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>';
+        }
     }
 }
 if (isset($_GET['edit'])) {
     $listbaiviet = $baiViet->getIdBaiViet($_GET['edit']);
+    $id='';
     $tieude = '';
     $mota = '';
     $danhmucbv = '';
     $noidungbv = '';
     $img = '';
+    $hide_show='';
     foreach ($listbaiviet as $key => $value) {
         # code...
+        $id=$value['id_bai_viet'];
         $tieude = $value['ten_bai_viet'];
         $mota = $value['mo_ta_bai_viet'];
         $noidungbv = $value['noi_dung_bai_viet'];
         $danhmucbv = $value['id_danh_muc_bai_viet'];
         $img = $value['hinh_bai_viet'];
+        $hide_show=$value['hide_show'];
     }
 } else if (isset($_GET['delete'])) {
-    echo 'ới';
+    $baiViet->deleteBaiviet($_GET['delete']);
 }
 
 ?>
@@ -73,49 +102,75 @@ if (isset($_GET['edit'])) {
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label>Tiêu Đề Bài Viết</label>
+            <input type="text" hidden name="txtId" value="
+            <?php if (isset($id)) {
+                                            echo $id;
+                                        } ?>
+            "/>
             <input type="text" value="<?php if (isset($tieude)) {
                                             echo $tieude;
                                         } ?>" name="txtTieuDe" class="form-control">
         </div>
         <div class="form-group">
             <label>Mô Tả Bài Viết</label>
-            <input type="text"  value="<?php if ($mota != '') {
-                                                            echo $mota;
-                                                        } ?>" class="form-control" name="txtMoTa">
+            <textarea type="text" class="form-control" name="txtMoTa"><?php if (isset($mota)) {
+                                                echo $mota;
+                                            } ?> </textarea>
         </div>
         <div class="form-group">
-            <label>Hình Bài Viết</label>
-
-            <input type='file' name="txtFile" class="form-control" onchange="loadImg(this)" require />
-            <img class="showimage" style=" max-width: 150px;max-height:150px;" src="<?php try {
-                                                                                        echo "img/" . $img;
-                                                                                    } catch (\Throwable $th) {
-                                                                                        echo $th;
-                                                                                    } ?>" alt="your image" require />
-
-        </div>
-        <div class="form-group">
-            <label>Danh Mục Bài Viết</label>
-            <select name="cboDanhMuc" class="custom-select">
-
-                <?php foreach ($listdmbv as $key => $value) {
-
-                    if ($danhmucbv != "") {
-                        if ($danhmucbv == $value['id_danh_muc']) {
-                            echo '<option selected value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
-                        } else {
-                            echo '<option value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
-                        }
-                    } else {
-                        echo '<option value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
+        <div class="custom-control custom-switch">
+                <input type="checkbox" name="txtHide_show"
+                <?php 
+                if (isset($hide_show)) {
+                    if($hide_show==1){
+                        echo'checked';
                     }
                 }
                 ?>
-
-            </select>
-
+                class="custom-control-input" id="customSwitch1">
+                <label class="custom-control-label" for="customSwitch1">Ẩn Bài Viết</label>
+            </div>
         </div>
-        <textarea id="content" class="form-control ckeditor" name="txtNoiDung">
+      
+
+            <div class="form-group">
+                <label>Hình Bài Viết</label>
+
+                <input type='file' name="txtFile" class="form-control" onchange="loadImg(this)" require />
+                <img class="showimage" style=" max-width: 150px;max-height:150px;" src="<?php try {
+                    if(isset($img)==""){
+                        echo "img/placeholder.jpg";
+                    }else{
+                        echo "img/" . $img;
+                    }
+                                                                                           
+                                                                                        } catch (\Throwable $th) {
+                                                                                            echo $th;
+                                                                                        } ?>" alt="your image" require />
+
+            </div>
+            <div class="form-group">
+                <label>Danh Mục Bài Viết</label>
+                <select name="cboDanhMuc" class="custom-select">
+
+                    <?php foreach ($listdmbv as $key => $value) {
+
+                        if ($danhmucbv != "") {
+                            if ($danhmucbv == $value['id_danh_muc']) {
+                                echo '<option selected value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
+                            } else {
+                                echo '<option value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
+                            }
+                        } else {
+                            echo '<option value="' . $value['id_danh_muc'] . '">' . $value['ten_danh_muc'] . '</option>';
+                        }
+                    }
+                    ?>
+
+                </select>
+
+            </div>
+            <textarea id="content" class="form-control ckeditor" name="txtNoiDung">
 
             <?php
             try {
@@ -125,8 +180,8 @@ if (isset($_GET['edit'])) {
 
             ?>
             </textarea>
-        <button type="submit" name="btnquanlybaiviet" value="add" class="btn btn-outline-success">Thêm</button>
-        <button type="submit" name="btnquanlybaiviet" value="update" class="btn btn-outline-primary">Cập Nhập</button>
+            <button type="submit" name="btnquanlybaiviet" value="add" class="btn btn-outline-success">Thêm</button>
+            <button type="submit" name="btnquanlybaiviet" value="update" class="btn btn-outline-primary">Cập Nhập</button>
 
     </form>
 
@@ -176,7 +231,7 @@ if (isset($_GET['edit'])) {
         CKEDITOR.replace('content', {
             filebrowserUploadUrl: "admin_upload.php",
         });
-       
+
         function loadImg(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
