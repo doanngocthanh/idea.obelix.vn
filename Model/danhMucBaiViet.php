@@ -2,15 +2,15 @@
 include_once("Model/database.php");
 class danhMucBaiViet extends DB {
   function getAll(){
-    return $this->select("SELECT * FROM `danhmucbaiviet`");
+    return $this->select("SELECT * FROM `danhmucbaiviet` order by so_luong_xem DESC");
   }
   function getIdLoai($id){
    
-    return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id'");
+    return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id' order by so_luong_xem DESC");
   }
   function getIdLoaiClient($id){
    
-    return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id'");
+    return $this->select("SELECT * FROM `danhmucbaiviet` WHERE id_loai='$id' order by so_luong_xem DESC");
   }
   function deleteDanhMucBaiViet($id){
     return $this->select("DELETE FROM `danhmucbaiviet`
